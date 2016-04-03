@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Pokedex</title>
+    <style>
+        button {
+            font-size: 42px;
+            width: 93%;
+            border-radius: 5px;
+            background-color: royalblue;
+            color: white;
+            margin-top: 2%;
+        }
+
+        .container {
+            position: relative;
+            margin-left: 5%;
+            margin-right: 5%;
+        }
+
+        #sidebar {
+            position: fixed;
+            /*border: 1px solid #000;*/
+            margin-left: 68%;
+            margin-right: 5%;
+            margin-top: 4%;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 30%;
+
+        }
+
+        #header {
+            /*border: 1px solid #000;*/
+            width: 100%;
+            height: 60px;
+        }
+
+        #content {
+            /*border: 1px solid #000;*/
+
+            width: 75%;
+
+        }
+
+        h1 {
+            outline: 2px solid white;
+            border: solid 1px black;
+            margin-left: 6%;
+            padding-left: 37%;
+        }
+        h2 {
+            padding-left: 37%;
+        }
+        #picture {
+            padding-left: 18%;
+        }
+
+        .pokemon {
+            border: 1px solid #000;
+            width: 24%;
+            height: 250px;
+            margin: 1% 1% 0 0;
+            padding-left: 3%;
+            padding-right: 3%;
+            padding-bottom: 2%;
+            float: left;
+        }
+
+        p {
+            border: 1px solid #000;
+        }
+
+        #type {
+            padding-left: 2%;
+        }
+
+        #parameter {
+            padding-left: 2%;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div id="sidebar">
+        <div id="pokemon"></div>
+    </div>
+    <div id="header"><h1>Pokedex</h1></div>
+    <div id="content">
+        <div id="images"></div>
+        <button type="button" onclick="loadMore()">Load More</button>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('body').restive({
+            breakpoints: ['240', '320', '480', '640', '960', '1024', '1280'],
+            classes: ['css-240', 'css-320', 'css-480', 'css-640', 'css-960', 'css-1024', 'css-1280']
+        });
+    });
+    $.restive.startMulti();
+
+    $('body').restive({
+        platform: 'ios',
+        breakpoints: ['240', '320', '480', '640', '960', '1024'],
+        classes: ['css-i-240', 'css-i-320', 'css-i-480', 'css-i-640', 'css-i-960', 'css-i-1024']
+    });
+
+    $('body').restive({
+        platform: 'android',
+        breakpoints: ['240', '320', '480', '640', '960', '1024'],
+        classes: ['css-a-240', 'css-a-320', 'css-a-480', 'css-a-640', 'css-a-960', 'css-a-1024']
+    });
+
+    $.restive.endMulti();
+</script>
+<script>
+    var xmlhttp = new XMLHttpRequest();
+    var limit = 12;
+    var url = "http://pokeapi.co/api/v1/pokemon/?limit=" + limit;
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            var myArr = JSON.parse(xmlhttp.responseText);
+            showAllPokemons(myArr);
+        }
+    };
+
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+
+    function filterByType(arr) {
+
+    }
+    function showAllPokemons(arr) {
+        var out = "";
+        var i;
+        var length = arr.objects.length;
+        for (i = 0; i < length; i++) {
+            out += '<div class="pokemon" onclick="getJsonOfPokemon(' + arr.objects[i].national_id + ')">';
+            out += '<p id="picture"><img src="http://pokeapi.co/media/img/' + arr.objects[i].national_id + '.png"/></p>';
+            out += '<p>' + arr.objects[i].name + '</p>';
+
+            var j;
+            var typeLength = arr.objects[i].types.length;
+            for (j = 0; j < typeLength; j++) {
+
+                if (arr.objects[i].types[j].name == "normal") {
+                    out += '<p id="type" style="background-color: navajowhite">' + arr.objects[i].types[j].name + '</p>';
+                }
+                if (arr.objects[i].types[j].name == "fire") {
+                    out += '<p id="type" style="background-color: red">' + arr.objects[i].types[j].name + '</p>';
+                }
+                if (arr.objects[i].types[j].name == "water") {
+                    out += '<p id="type" style="background-color: royalblue">' + arr.objects[i].types[j].name + '</p>';
+                }
+                if (arr.objects[i].types[j].name == "poison") {
+                    out += '<p id="type" style="background-color: green">' + arr.objects[i].types[j].name + '</p>';
+                }
+                if (arr.objects[i].types[j].name == "electric") {
+                    out += '<p id="type" style="background-color: yellow">' + arr.objects[i].types[j].name + '</p>';
+                }
+                if (arr.objects[i].types[j].name == "ground") {
+                    out += '<p id="type" style="background-color: saddlebrown">' + arr.objects[i].types[j].name + '</p>';
+                }
+                if (arr.objects[i].types[j].name == "bug") {
+                    out += '<p id="type" style="background-color: blanchedalmond">' + arr.objects[i].types[j].name + '</p>';
+                }
+                if (arr.objects[i].types[j].name == "flying") {
+                    out += '<p id="type" style="background-color: cornflowerblue">' + arr.objects[i].types[j].name + '</p>';
+                }
+                if (arr.objects[i].types[j].name == "fairy") {
+                    out += '<p id="type" style="background-color: pink">' + arr.objects[i].types[j].name + '</p>';
+                }
+                if (arr.objects[i].types[j].name == "grass") {
+                    out += '<p id="type" style="background-color: greenyellow">' + arr.objects[i].types[j].name + '</p>';
+                }
+                if (arr.objects[i].types[j].name == "fighting") {
+                    out += '<p id="type" style="background-color: lightblue">' + arr.objects[i].types[j].name + '</p>';
+                }
+                if (arr.objects[i].types[j].name == "psychic") {
+                    out += '<p id="type" style="background-color: gold">' + arr.objects[i].types[j].name + '</p>';
+                }
+                if (arr.objects[i].types[j].name == "rock") {
+                    out += '<p id="type" style="background-color: gray">' + arr.objects[i].types[j].name + '</p>';
+                }
+                if (arr.objects[i].types[j].name == "steel") {
+                    out += '<p id="type" style="background-color: darkgrey">' + arr.objects[i].types[j].name + '</p>';
+                }
+                if (arr.objects[i].types[j].name == "ice") {
+                    out += '<p id="type" style="background-color: cornflowerblue">' + arr.objects[i].types[j].name + '</p>';
+                }
+                if (arr.objects[i].types[j].name == "ghost") {
+                    out += '<p id="type" style="background-color: gainsboro">' + arr.objects[i].types[j].name + '</p>';
+                }
+                if (arr.objects[i].types[j].name == "dragon") {
+                    out += '<p id="type" style="background-color: lemonchiffon">' + arr.objects[i].types[j].name + '</p>';
+                }
+                if (arr.objects[i].types[j].name == "dark") {
+                    out += '<p id="type" style="background-color: darkblue">' + arr.objects[i].types[j].name + '</p>';
+                }
+            }
+            out += '</div>';
+        }
+        document.getElementById("images").innerHTML = out;
+    }
+
+
+    function showInfoOfSinglePokemon(jsonobject) {
+        var out = "<div>";
+        out += '<p id="picture"><img src="http://pokeapi.co/media/img/' + jsonobject.national_id + '.png"/></p>';
+        out += "<p><h2>" + jsonobject.name + "</h2></p>";
+        out += "<p id='parameter'>" + jsonobject.national_id + "</p>";
+        typeLength = jsonobject.types.length;
+        for (j = 0; j < typeLength; j++) {
+            out += '<p id="type"> Type: ' + jsonobject.types[j].name + '</p>';
+        }
+
+
+        out += "<p id='parameter'> Attack: " + jsonobject.attack + "</p>";
+        out += "<p id='parameter'> Defense: " + jsonobject.defense + "</p>";
+        out += "<p id='parameter'> HP: " + jsonobject.hp + "</p>";
+        out += "<p id='parameter'> SP Attack: " + jsonobject.sp_atk + "</p>";
+        out += "<p id='parameter'> SP Defense: " + jsonobject.sp_def + "</p>";
+        out += "<p id='parameter'> Speed: " + jsonobject.speed + "</p>";
+        out += "<p id='parameter'> Weight: " + jsonobject.weight + "</p>";
+        out += "<p id='parameter'> Total moves: " + jsonobject.total + "</p>";
+        out += "</div>";
+        document.getElementById("pokemon").innerHTML = out;
+
+    }
+    function getJsonOfPokemon(id) {
+        var xmlhttp = new XMLHttpRequest();
+        var url = "http://pokeapi.co/api/v1/pokemon/" + id;
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var myArr = JSON.parse(xmlhttp.responseText);
+                showInfoOfSinglePokemon(myArr);
+            }
+        };
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+    }
+    function loadMore() {
+        limit += 12;
+        refresh();
+    }
+    function refresh() {
+        var xmlhttp = new XMLHttpRequest();
+        var url = "http://pokeapi.co/api/v1/pokemon/?limit=" + limit;
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var myArr = JSON.parse(xmlhttp.responseText);
+                showAllPokemons(myArr);
+            }
+        };
+
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+    }
+
+</script>
+</body>
+</html>
