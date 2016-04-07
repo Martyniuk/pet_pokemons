@@ -125,7 +125,7 @@
 <script>
     var xmlhttp = new XMLHttpRequest();
     var limit = 12;
-    var url = "http://pokeapi.co/api/v1/pokemon/?limit=" + limit;
+    var url = "https://pokeapi.co/api/v1/pokemon/?limit=" + limit;
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             var myArr = JSON.parse(xmlhttp.responseText);
@@ -145,7 +145,7 @@
         var length = arr.objects.length;
         for (i = 0; i < length; i++) {
             out += '<div class="pokemon" onclick="getJsonOfPokemon(' + arr.objects[i].national_id + ')">';
-            out += '<p id="picture"><img src="http://pokeapi.co/media/img/' + arr.objects[i].national_id + '.png"/></p>';
+            out += '<p id="picture"><img src="https://pokeapi.co/media/img/' + arr.objects[i].national_id + '.png"/></p>';
             out += '<p>' + arr.objects[i].name + '</p>';
 
             var j;
@@ -215,7 +215,7 @@
 
     function showInfoOfSinglePokemon(jsonobject) {
         var out = "<div>";
-        out += '<p id="picture"><img src="http://pokeapi.co/media/img/' + jsonobject.national_id + '.png"/></p>';
+        out += '<p id="picture"><img src="https://pokeapi.co/media/img/' + jsonobject.national_id + '.png"/></p>';
         out += "<p><h2>" + jsonobject.name + "</h2></p>";
         out += "<p id='parameter'>" + jsonobject.national_id + "</p>";
         typeLength = jsonobject.types.length;
@@ -238,7 +238,7 @@
     }
     function getJsonOfPokemon(id) {
         var xmlhttp = new XMLHttpRequest();
-        var url = "http://pokeapi.co/api/v1/pokemon/" + id;
+        var url = "https://pokeapi.co/api/v1/pokemon/" + id;
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 var myArr = JSON.parse(xmlhttp.responseText);
@@ -254,7 +254,7 @@
     }
     function refresh() {
         var xmlhttp = new XMLHttpRequest();
-        var url = "http://pokeapi.co/api/v1/pokemon/?limit=" + limit;
+        var url = "https://pokeapi.co/api/v1/pokemon/?limit=" + limit;
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 var myArr = JSON.parse(xmlhttp.responseText);
